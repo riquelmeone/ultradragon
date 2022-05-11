@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    jkube.io/scm-url: https://https://github.com/riquelmeone//home/ultradragon
+    jkube.io/issue-system: Redmine
+    jkube.io/issue-tracker-url: https://redmine.fic.udc.es/project/ultradragon/issues
+    jkube.io/scm-tag: head
+  labels:
+    app: ultradragon
+    provider: jkube
+    version: 1
+    group: de.materna.home
+  name: ultradragon
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: ultradragon
+      provider: jkube
+      group: de.materna.home
+  template:
+    metadata:
+      annotations:
+        jkube.io/scm-url: https://https://github.com/riquelmeone//home/ultradragon
+        jkube.io/issue-system: Redmine
+        jkube.io/issue-tracker-url: https://redmine.fic.udc.es/project/ultradragon/issues
+        jkube.io/scm-tag: head
+      labels:
+        app: ultradragon
+        provider: jkube
+        version: 1
+        group: de.materna.home
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        image: https://github.com/riquelmeone/:5050/home/ultradragon:latest
+        imagePullPolicy: Always
+        name: deploy-ultradragon
+        securityContext:
+          privileged: false
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: nightfall
